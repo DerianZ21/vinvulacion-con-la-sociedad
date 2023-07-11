@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e47144d3-5309-4691-8845-40aa60afab5a">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="fecha_inicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_final" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+CASE asistencia WHEN true THEN 'Asistió' WHEN false THEN 'Faltó' END AS Asistencia,
+c.nom_cur AS Nombre_Curso,
+a.estudiante AS Nombre_Estudiante,
+a.fech_asis AS Fecha_Asistencia
+
+FROM asistencia a 
+ INNER JOIN curso c ON c.id_curso = a.id_curso
+WHERE a.fech_asis between $P{fecha_inicial} AND $P{fecha_final}]]>
+	</queryString>
+	<field name="asistencia" class="java.lang.String"/>
+	<field name="nombre_curso" class="java.lang.String"/>
+	<field name="nombre_estudiante" class="java.lang.String"/>
+	<field name="fecha_asistencia" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bbf1b9ef-59ee-4519-9448-6a636e41c537" style="Title" x="101" y="-2" width="440" height="33"/>
+				<textElement verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[CENTRO MISIONAL "BUEN PASTOR"]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="12fed061-01fe-4f15-a78b-a96c79c165d4" x="0" y="0" width="307" height="56"/>
+				<imageExpression><![CDATA["C:\\Users\\wjoan\\OneDrive\\Escritorio\\VinculacionUG\\src\\Imagenes\\logo-fundacion.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="bbf1b9ef-59ee-4519-9448-6a636e41c537" style="Title" x="163" y="31" width="289" height="39"/>
+				<textElement verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Reporte de asistencias ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<line>
+				<reportElement uuid="574ed4e2-fd0d-4011-97e3-7e4df1f37202" positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="9b200d37-e1ac-421e-b427-815d2908b1cc" style="Column header" x="296" y="21" width="102" height="15"/>
+				<textElement/>
+				<text><![CDATA[Asistencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="007ec640-eabc-4fff-a80c-eb1ede3ff789" style="Column header" x="151" y="20" width="138" height="15"/>
+				<textElement/>
+				<text><![CDATA[Nombre del curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="09cdccbf-c12d-4836-a3ac-c7724f84d8c9" style="Column header" x="0" y="19" width="138" height="15"/>
+				<textElement/>
+				<text><![CDATA[Nombre del estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af385082-dafc-4722-b9c7-66f337ee2203" style="Column header" x="414" y="19" width="138" height="15"/>
+				<textElement/>
+				<text><![CDATA[Fecha de asistencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="a444646e-2d8b-43ec-aa11-5302e606622e" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="519480de-951b-4956-954d-3d8b26fd9bf9" style="Detail" x="151" y="1" width="112" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombre_curso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="707b166a-ad3b-4e82-b78a-a68c11740bbf" style="Detail" x="415" y="0" width="126" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_asistencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e79b8adc-cb96-4dd3-834f-c6e5e0a01923" style="Detail" x="0" y="1" width="138" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombre_estudiante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74efd5d7-d6bd-4bac-959c-9a2d3bd8e001" style="Detail" x="297" y="1" width="101" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{asistencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement uuid="3da41887-b5bd-4dc7-ad75-e6a5d63780d4" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fe1b9126-ee6f-4a71-abec-b3dff4b6095c" style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="0a704f91-5844-47e9-be7f-6545d7784010" style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="b8a76925-be6b-4fc2-9831-2ee6ff2ecda7" style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

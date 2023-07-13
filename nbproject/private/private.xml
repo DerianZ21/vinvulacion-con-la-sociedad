@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Registro_Curso.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/dao/DaoBeneficiario.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/controlador/Controlador.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_Curso_per.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_DatoPadre.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_DatoMadre.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/modelo/Reg_Benf.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Menu_Mantenedor.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/UsuDatos.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/idao/IBeneficiario.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/modelo/BeneficiarioEntity.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Menu_Principal.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Registrar_Asistencia.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_Personal.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Lista_Beneficiarios.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_DatoEscolar.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/modelo/ExportarExcel.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Inicio.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/dao/DaoCurso.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Crear_NuevoUsuario.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Crear_NuevoCurso.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/dao/DaoTipoPersona.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Editar/BeneFiltro.java</file>
+        </group>
+    </open-files>
+</project-private>

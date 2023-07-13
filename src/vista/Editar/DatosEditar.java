@@ -1307,6 +1307,7 @@ public class DatosEditar extends javax.swing.JFrame {
         ape = (String) modelo.getValueAt(num, 2);
         direc = (String) modelo.getValueAt(num, 5);
         telef = (String) modelo.getValueAt(num, 6);
+<<<<<<< HEAD
         benefi.setCedula(cedula);
         benefi.setNombre(nombr);
         benefi.setApellido(ape);
@@ -1330,6 +1331,31 @@ public class DatosEditar extends javax.swing.JFrame {
         jTxtDiscapacidad.setText(benefi.getProm_sal());
         Jtf_celularBenefi.setText(benefi.getTelefono());
         Jtf_convivienteBenefi.setText(String.valueOf(benefi.getNum_conv()));
+=======
+        benefi.setBen_ced(cedula);
+        benefi.setBen_nom(nombr);
+        benefi.setBen_ape(ape);
+        benefi.setBen_dir(direc);
+        benefi.setBen_cel(telef);
+        
+        benefi = daoBenefi.obtener(benefi);
+        System.out.println(" id deberia" + benefi.getId_benf());
+        Jtf_CedulaBenefi.setText(benefi.getBen_ced());
+        Jtf_edadBenefi.setText(String.valueOf(benefi.getBen_edad()));
+        
+        Date date = benefi.getBen_fechanac();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+        String strDate = dateFormat.format(date);  
+        jTxtFechaNac.setText(strDate);
+        Jtf_NombresBenefi.setText(benefi.getBen_nom());
+        Jtf_ApellidosBenefi.setText(benefi.getBen_ape());
+        Jtf_CorreoBenefi.setText(benefi.getBen_email());
+        Jcb_Religion.setSelectedItem(benefi.getBen_relig());
+        Jtf_DirecBenefi.setText(benefi.getBen_dir());
+        jTxtDiscapacidad.setText(benefi.getBen_promsal());
+        Jtf_celularBenefi.setText(benefi.getBen_cel());
+        Jtf_convivienteBenefi.setText(String.valueOf(benefi.getBen_convivientes()));
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         
         //llenar parte escolar
         escolar.setId_escuela(benefi.getId_escu());
@@ -1365,18 +1391,30 @@ public class DatosEditar extends javax.swing.JFrame {
         Jtf_TotalIngresos.setText(padres.getIng_econ());
         mama.setId_mama(padres.getId_mama());
         mama = daomama.obtenerDato(mama);
+<<<<<<< HEAD
         Jtf_nombreMama.setText(mama.getNombre());
         Jcb_EstadoMama.setSelectedItem(mama.getEst_civ_ma());
         Jtf_TelefMama.setText(mama.getTelefono());
+=======
+        Jtf_nombreMama.setText(mama.getNombre_ma());
+        Jcb_EstadoMama.setSelectedItem(mama.isEst_civ_ma());
+        Jtf_TelefMama.setText(mama.getTele_ma());
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         Jtf_lugar_trabMama.setText(mama.getLug_tra_ma());
         Jtf_CargoMama.setText(mama.getCargo_ma());
         
         
         papa.setId_papa(padres.getId_papa());
         papa = daopapa.obtenerDato(papa);
+<<<<<<< HEAD
         Jtf_nombrePapa.setText(papa.getNombre());
         Jcb_EstadoPapa.setSelectedItem(papa.getEst_civ_pa());
         Jtf_TelefPapa.setText(papa.getTelefono());
+=======
+        Jtf_nombrePapa.setText(papa.getNombre_pa());
+        Jcb_EstadoPapa.setSelectedItem(papa.isEst_civ_pa());
+        Jtf_TelefPapa.setText(papa.getTele_pa());
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         Jtf_lugar_trabPapa.setText(papa.getLug_tra_pa());
         Jtf_CargoPapa.setText(papa.getCargo_pa());
     }
@@ -1483,11 +1521,16 @@ public class DatosEditar extends javax.swing.JFrame {
         SimpleDateFormat  formato = new SimpleDateFormat("dd-MM-yyyy"); 
         try {
             Date date = formato.parse(jTxtFechaNac.getText());
+<<<<<<< HEAD
             nuevBenefi.setFech_nac(date);
+=======
+            nuevBenefi.setBen_fechanac(date);
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "El campo fecha de nacimiento debe tener el formato dd-MM-yyyy", "Error", JOptionPane.WARNING_MESSAGE);
         }
         nuevBenefi.setId_benf(benefi.getId_benf());
+<<<<<<< HEAD
         nuevBenefi.setCedula(Jtf_CedulaBenefi.getText());
         nuevBenefi.setEdad(Integer.valueOf(Jtf_edadBenefi.getText()));
         nuevBenefi.setNombre(Jtf_NombresBenefi.getText());
@@ -1498,6 +1541,18 @@ public class DatosEditar extends javax.swing.JFrame {
         nuevBenefi.setProm_sal(jTxtDiscapacidad.getText());
         nuevBenefi.setTelefono(Jtf_celularBenefi.getText());
         nuevBenefi.setNum_conv(Integer.valueOf(Jtf_convivienteBenefi.getText()));
+=======
+        nuevBenefi.setBen_ced(Jtf_CedulaBenefi.getText());
+        nuevBenefi.setBen_edad(Integer.valueOf(Jtf_edadBenefi.getText()));
+        nuevBenefi.setBen_nom(Jtf_NombresBenefi.getText());
+        nuevBenefi.setBen_ape(Jtf_ApellidosBenefi.getText());
+        nuevBenefi.setBen_email(Jtf_CorreoBenefi.getText());
+        nuevBenefi.setBen_relig((String)Jcb_Religion.getSelectedItem());
+        nuevBenefi.setBen_dir(Jtf_DirecBenefi.getText());
+        nuevBenefi.setBen_promsal(jTxtDiscapacidad.getText());
+        nuevBenefi.setBen_cel(Jtf_celularBenefi.getText());
+        nuevBenefi.setBen_convivientes(Integer.valueOf(Jtf_convivienteBenefi.getText()));
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         nuevBenefi.setId_escu(Integer.valueOf(benefi.getId_escu()));
         nuevBenefi.setId_padres(Integer.valueOf(benefi.getId_padres()));
         nuevBenefi.setId_socioec(Integer.valueOf(benefi.getId_socioec()));
@@ -1522,6 +1577,7 @@ public class DatosEditar extends javax.swing.JFrame {
         padres.setIng_econ(Jtf_TotalIngresos.getText());
         daopadres.modificar(padres);
         
+<<<<<<< HEAD
         mama.setNombre(Jtf_nombreMama.getText());
         mama.setEst_civ_ma((String)Jcb_EstadoMama.getSelectedItem());
         mama.setLug_tra_ma(Jtf_lugar_trabMama.getText());
@@ -1535,6 +1591,21 @@ public class DatosEditar extends javax.swing.JFrame {
         papa.setLug_tra_pa(Jtf_lugar_trabPapa.getText());
         papa.setCargo_pa(Jtf_CargoPapa.getText());
         papa.setTelefono(Jtf_TelefPapa.getText());
+=======
+        mama.setNombre_ma(Jtf_nombreMama.getText());
+        mama.setEst_civ_ma((String)Jcb_EstadoMama.getSelectedItem());
+        mama.setLug_tra_ma(Jtf_lugar_trabMama.getText());
+        mama.setCargo_ma(Jtf_CargoMama.getText());
+        mama.setTele_ma(Jtf_TelefMama.getText());
+        valorma = daomama.modificar(mama);
+        
+//        papa.setId_papa(benefi.getId_socioec());
+        papa.setNombre_pa(Jtf_nombrePapa.getText());
+        papa.setEst_civ_pa((String)Jcb_EstadoPapa.getSelectedItem());
+        papa.setLug_tra_pa(Jtf_lugar_trabPapa.getText());
+        papa.setCargo_pa(Jtf_CargoPapa.getText());
+        papa.setTele_pa(Jtf_TelefPapa.getText());
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         valorpa = daopapa.modificar(papa);
         
         if (valorbenefi || valorescu  || valorsocio || valorma || valorpa ){

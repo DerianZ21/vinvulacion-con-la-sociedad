@@ -68,6 +68,7 @@ public class Lista_Beneficiarios extends javax.swing.JFrame {
         Jtab_LstBeneficiario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Jtab_LstBeneficiario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+<<<<<<< HEAD
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -83,6 +84,23 @@ public class Lista_Beneficiarios extends javax.swing.JFrame {
         ) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+=======
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Cedula", "Nombres", "Apellidos", "Representante", "Parentesco"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
             };
 
             public Class getColumnClass(int columnIndex) {

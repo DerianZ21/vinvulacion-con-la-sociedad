@@ -129,7 +129,11 @@ public class DaoBeneficiario extends Conexion implements IBeneficiario {
         ArrayList<Object[]> beneficiariosList= new ArrayList<>();
         
         String sql="SELECT t.cedula, t.nombre, t.apellido,  t.direccion, t.telefono\n" +
+<<<<<<< HEAD
                     "FROM  tipoPersona t ";
+=======
+                "FROM tipoPersona t";
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         
         try {
             this.conectar();
@@ -141,8 +145,13 @@ public class DaoBeneficiario extends Conexion implements IBeneficiario {
             stm=conexion.prepareStatement(sql);
             rs= stm.executeQuery();
             while(rs.next()){
+<<<<<<< HEAD
                 Object[] fila = new Object[5];
                 for(int i=0; i<=4;i++){
+=======
+                Object[] fila = new Object[7];
+                for(int i=0; i<=6;i++){
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
                    fila[i]=rs.getObject(i+1);
                 }
                 beneficiariosList.add(fila);

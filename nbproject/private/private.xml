@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Registro_Curso.java</file>
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/dao/DaoBeneficiario.java</file>
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/controlador/Controlador.java</file>
@@ -26,6 +27,12 @@
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Crear_NuevoCurso.java</file>
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/dao/DaoTipoPersona.java</file>
             <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Editar/BeneFiltro.java</file>
+=======
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/modelo/Reg_dataSocial.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/controlador/Controlador.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/vista/Ins_DatoMadre.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/VinculacionUG-main/src/idao/IBeneficiario.java</file>
+>>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
         </group>
     </open-files>
 </project-private>

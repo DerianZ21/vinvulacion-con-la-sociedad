@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ import modelo.tipoPersonaEntity;
 public class DaoPapa extends Conexion implements IPapa{
     
     final String DELETE="DELETE from public.Papa where id_papa=?";
-    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (nombre, telefono) VALUES (?, ?)";
+    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (cedula, fech_nac, nombre, apellido, edad, telefono, direccion, correo, religion   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     final String INSERT_PAPA = "INSERT INTO public.Papa (id_tipo_persona, est_civ_pa, lug_tra_pa, cargo_pa) VALUES (?, ?, ?, ?)";
 
     @Override
@@ -35,14 +36,25 @@ public class DaoPapa extends Conexion implements IPapa{
         PreparedStatement staTipoPersona = null;
         PreparedStatement staPapa = null;
         ResultSet generatedKeys = null;
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = simpleDateFormat.format(pa.getFech_nac());
+        java.sql.Date date1 = java.sql.Date.valueOf(formattedDate);
         try {
             this.conectar();
             this.conexion.setAutoCommit(false); // Iniciar transacción
 
             // Insertar en tabla tipoPersona
             staTipoPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
-            staTipoPersona.setString(1, pa.getNombre());
-            staTipoPersona.setString(2, pa.getTelefono());
+            staTipoPersona.setString(1, pa.getCedula());
+            staTipoPersona.setDate(2, date1);
+            staTipoPersona.setString(3, pa.getNombre());
+            staTipoPersona.setString(4, pa.getApellido());
+            staTipoPersona.setInt(5, pa.getEdad());
+            staTipoPersona.setString(6, pa.getDireccion());
+            staTipoPersona.setString(7, pa.getCorreo());
+            staTipoPersona.setString(8, pa.getReligion());
+            staTipoPersona.setString(9, pa.getTelefono());
             staTipoPersona.executeUpdate();
 
             // Obtener el ID generado para el registro insertado en tipoPersona
@@ -55,10 +67,10 @@ public class DaoPapa extends Conexion implements IPapa{
             if (idTipoPersona != -1) {
                 // Insertar en tabla Papa
                 staPapa = this.conexion.prepareStatement(INSERT_PAPA);
-                staPapa.setInt(1, idTipoPersona);
-                staPapa.setString(2, pa.getEst_civ_pa());
-                staPapa.setString(3, pa.getLug_tra_pa());
-                staPapa.setString(4, pa.getCargo_pa());
+                //staPapa.setInt(1, idTipoPersona);
+                staPapa.setString(1, pa.getEst_civ_pa());
+                staPapa.setString(2, pa.getLug_tra_pa());
+                staPapa.setString(3, pa.getCargo_pa());
                 staPapa.executeUpdate();
 
                 registrar = true;

@@ -64,11 +64,12 @@ public class DaoBeneficiario extends Conexion implements IBeneficiario {
 
                 // Insertar en tabla Mama
                 sta_beneficiario = this.conexion.prepareStatement(INSERT_BENEFICIARIO);
-                sta_beneficiario.setInt(1, id_tipoPersona);
-                sta_beneficiario.setString(2, beneficiario.getProm_sal());
-                sta_beneficiario.setInt(3, beneficiario.getNum_conv());
-                sta_beneficiario.setInt(4, beneficiario.getId_escu());
-                sta_beneficiario.setInt(5, beneficiario.getId_socioec());
+//                sta_beneficiario.setInt(1, id_tipoPersona);
+                sta_beneficiario.setString(1, beneficiario.getProm_sal());
+                sta_beneficiario.setInt(2, beneficiario.getNum_conv());
+                sta_beneficiario.setInt(3, beneficiario.getId_escu());
+                sta_beneficiario.setInt(4, beneficiario.getId_socioec());
+                sta_beneficiario.executeUpdate();
 
                 registrar = true;
             }

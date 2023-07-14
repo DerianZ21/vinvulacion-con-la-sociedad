@@ -42,10 +42,7 @@ public class DaoTipoPersona extends Conexion implements ITipoPersona{
             sta=this.conexion.prepareStatement(INSERT);
              
             sta.setString(1, tipoPersona.getCedula());
-            
-            
             sta.setDate(2, date1);
-            
             sta.setString(3, tipoPersona.getNombre());
             sta.setString(4, tipoPersona.getApellido());
             sta.setInt(5, tipoPersona.getEdad());

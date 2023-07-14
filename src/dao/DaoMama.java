@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class DaoMama  extends Conexion implements IMama{
     
     final String DELETE="DELETE from public.Mama where id_mama=?";
     
-    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (nombre, telefono) VALUES (?, ?)";
+    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (cedula, fech_nac, nombre, apellido, edad, telefono, direccion, correo, religion   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     final String INSERT_MAMA = "INSERT INTO public.Mama (id_tipoPersona, est_civ_ma, lug_tra_ma, cargo_ma) VALUES (?, ?, ?, ?)";
 
     @Override
@@ -35,14 +36,24 @@ public class DaoMama  extends Conexion implements IMama{
         PreparedStatement staPersona = null;
         PreparedStatement staMama = null;
         ResultSet generatedKeys = null;
-
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = simpleDateFormat.format(ma.getFech_nac());
+        java.sql.Date date1 = java.sql.Date.valueOf(formattedDate);
         try {
             this.conectar();
 
             // Insertar en tabla Persona
             staPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
-            staPersona.setString(1, ma.getNombre());
-            staPersona.setString(2, ma.getTelefono());
+            staPersona.setString(1, ma.getCedula());
+            staPersona.setDate(2, date1);
+            staPersona.setString(3, ma.getNombre());
+            staPersona.setString(4, ma.getApellido());
+            staPersona.setInt(5, ma.getEdad());
+            staPersona.setString(6, ma.getDireccion());
+            staPersona.setString(7, ma.getCorreo());
+            staPersona.setString(8, ma.getReligion());
+            staPersona.setString(9, ma.getTelefono());
             staPersona.executeUpdate();
 
             // Obtener el ID generado para el registro insertado en Persona
@@ -52,10 +63,10 @@ public class DaoMama  extends Conexion implements IMama{
 
                 // Insertar en tabla Mama
                 staMama = this.conexion.prepareStatement(INSERT_MAMA);
-                staMama.setInt(1, id_tipoPersona);
-                staMama.setString(2, ma.getEst_civ_ma());
-                staMama.setString(3, ma.getLug_tra_ma());
-                staMama.setString(4, ma.getCargo_ma());
+//                staMama.setInt(1, id_tipoPersona);
+                staMama.setString(1, ma.getEst_civ_ma());
+                staMama.setString(2, ma.getLug_tra_ma());
+                staMama.setString(3, ma.getCargo_ma());
                 staMama.executeUpdate();
 
                 registrar = true;

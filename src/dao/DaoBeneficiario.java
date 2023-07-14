@@ -24,14 +24,18 @@ import modelo.Reg_Benf;
 
 
 public class DaoBeneficiario extends Conexion implements IBeneficiario {
-    final String INSERT= "Insert into public.beneficiario(prom_sal,num_conv, id_escu, id_socieco) VALUES (?,?,?,?)";
+    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (cedula, fech_nac, nombre, apellido, edad, telefono, direccion, correo, religion   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    final String INSERT_BENEFICIARIO= "Insert into public.beneficiario(prom_sal,num_conv, id_escu, id_socieco) VALUES (?,?,?,?)";
    
 
      @Override
     public boolean insertar(Reg_Benf beneficiario) {
         
         boolean registrar = false;
-        PreparedStatement sta=null;
+        
+        PreparedStatement sta_tipoPersona=null;
+        PreparedStatement sta_beneficiario=null;
+        ResultSet generatedKeys = null;
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = simpleDateFormat.format(beneficiario.getFech_nac());
@@ -39,26 +43,37 @@ public class DaoBeneficiario extends Conexion implements IBeneficiario {
         
         try {
             this.conectar();
-            sta=this.conexion.prepareStatement(INSERT);
-             
-            sta.setString(1, beneficiario.getCedula());
             
+            sta_tipoPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
+            sta_tipoPersona.setString(1, beneficiario.getCedula());
+            sta_tipoPersona.setDate(2, date1);
+            sta_tipoPersona.setString(3, beneficiario.getNombre());
+            sta_tipoPersona.setString(4, beneficiario.getApellido());
             
-            sta.setDate(2, date1);
+            sta_tipoPersona.setInt(5, beneficiario.getEdad());
+            sta_tipoPersona.setString(6, beneficiario.getTelefono());
+            sta_tipoPersona.setString(7, beneficiario.getDireccion());
+            sta_tipoPersona.setString(8, beneficiario.getCorreo());
+            sta_tipoPersona.setString(9, beneficiario.getReligion());
+            sta_tipoPersona.executeUpdate();
             
-            sta.setString(3, beneficiario.getNombre());
-            sta.setString(4, beneficiario.getApellido());
-            sta.setInt(5, beneficiario.getEdad());
-            sta.setString(6, beneficiario.getDireccion());
-            sta.setString(7, beneficiario.getCorreo());
-            sta.setString(8, beneficiario.getReligion());
-            sta.setString(9, beneficiario.getProm_sal());
-            sta.setString(10, beneficiario.getTelefono());
-            sta.setInt(11, beneficiario.getNum_conv());
-            sta.setInt(12, beneficiario.getId_escu());
-            sta.setInt(13, beneficiario.getId_socioec());
+            generatedKeys = sta_tipoPersona.getGeneratedKeys();
             
-            if (sta.executeUpdate() >0){
+            if (generatedKeys.next()) {
+                int id_tipoPersona = generatedKeys.getInt(1);
+
+                // Insertar en tabla Mama
+                sta_beneficiario = this.conexion.prepareStatement(INSERT_BENEFICIARIO);
+                sta_beneficiario.setInt(1, id_tipoPersona);
+                sta_beneficiario.setString(2, beneficiario.getProm_sal());
+                sta_beneficiario.setInt(3, beneficiario.getNum_conv());
+                sta_beneficiario.setInt(4, beneficiario.getId_escu());
+                sta_beneficiario.setInt(5, beneficiario.getId_socioec());
+
+                registrar = true;
+            }
+            
+            if (sta_tipoPersona.executeUpdate() >0){
                 JOptionPane.showMessageDialog(null, "Fueron ingresados todos los datos", "Sistema", JOptionPane.PLAIN_MESSAGE);
             }else {
                 JOptionPane.showMessageDialog(null, "No se guardardo los datos del beneficiario", "Error", JOptionPane.WARNING_MESSAGE);

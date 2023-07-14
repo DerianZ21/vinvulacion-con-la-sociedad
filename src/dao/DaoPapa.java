@@ -24,42 +24,78 @@ import modelo.tipoPersonaEntity;
  * @author Sebastian Riofrio
  */
 public class DaoPapa extends Conexion implements IPapa{
-    final String INSERT= "Insert into public.Papa( est_civ_pa, lug_tra_pa, cargo_pa) VALUES (?,?,?)";
+    
     final String DELETE="DELETE from public.Papa where id_papa=?";
+    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (nombre, telefono) VALUES (?, ?)";
+    final String INSERT_PAPA = "INSERT INTO public.Papa (id_tipo_persona, est_civ_pa, lug_tra_pa, cargo_pa) VALUES (?, ?, ?, ?)";
 
-    //Papa paNuev ;
     @Override
     public boolean insertar(Papa pa) {
         boolean registrar = false;
-        PreparedStatement sta=null;
+        PreparedStatement staTipoPersona = null;
+        PreparedStatement staPapa = null;
+        ResultSet generatedKeys = null;
         try {
             this.conectar();
-            sta=this.conexion.prepareStatement(INSERT);
-             
-            sta.setString(1, pa.getEst_civ_pa());
-            sta.setString(2, pa.getLug_tra_pa());
-            sta.setString(3, pa.getCargo_pa());
-            
-            
-            
-            sta.executeUpdate();
-         
-        }catch (SQLException e){
-            System.out.println("Esta mal el registro sql del insertar"+e);
-            JOptionPane.showMessageDialog(null, "Faltan datos o en el campo id_papa "
-                     + " a ingresado un dato que no existe a esa tabla", "Error", JOptionPane.WARNING_MESSAGE);
+            this.conexion.setAutoCommit(false); // Iniciar transacción
+
+            // Insertar en tabla tipoPersona
+            staTipoPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
+            staTipoPersona.setString(1, pa.getNombre());
+            staTipoPersona.setString(2, pa.getTelefono());
+            staTipoPersona.executeUpdate();
+
+            // Obtener el ID generado para el registro insertado en tipoPersona
+            generatedKeys = staTipoPersona.getGeneratedKeys();
+            int idTipoPersona = -1;
+            if (generatedKeys.next()) {
+                idTipoPersona = generatedKeys.getInt(1);
+            }
+
+            if (idTipoPersona != -1) {
+                // Insertar en tabla Papa
+                staPapa = this.conexion.prepareStatement(INSERT_PAPA);
+                staPapa.setInt(1, idTipoPersona);
+                staPapa.setString(2, pa.getEst_civ_pa());
+                staPapa.setString(3, pa.getLug_tra_pa());
+                staPapa.setString(4, pa.getCargo_pa());
+                staPapa.executeUpdate();
+
+                registrar = true;
+            }
+
+            this.conexion.commit(); // Confirmar la transacción
+        } catch (SQLException e) {
+            System.out.println("Error en la consulta SQL del insertar: " + e);
+            JOptionPane.showMessageDialog(null, "Faltan datos o se ingresó un dato incorrecto en la tabla tipoPersona", "Error", JOptionPane.WARNING_MESSAGE);
+            try {
+                if (this.conexion != null) {
+                    this.conexion.rollback(); // Revertir la transacción en caso de error
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al realizar rollback: " + ex);
+            }
         } catch (Exception ex) {
             Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
+                if (generatedKeys != null) {
+                    generatedKeys.close();
+                }
+                if (staTipoPersona != null) {
+                    staTipoPersona.close();
+                }
+                if (staPapa != null) {
+                    staPapa.close();
+                }
+                this.conexion.setAutoCommit(true); // Restaurar el modo de autocommit
                 this.desconectar();
             } catch (Exception ex) {
                 Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return registrar;
-    }
-
+}
     @Override
     public boolean eliminar(Papa pa) {
         boolean eliminar=false;

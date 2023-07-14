@@ -23,35 +23,59 @@ import modelo.Mama;
  * @author Sebastian Riofrio
  */
 public class DaoMama  extends Conexion implements IMama{
-    final String INSERT= "Insert into public.Mama(est_civ_ma,lug_tra_ma,cargo_ma) VALUES (?,?,?)";
+    
     final String DELETE="DELETE from public.Mama where id_mama=?";
     
+    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (nombre, telefono) VALUES (?, ?)";
+    final String INSERT_MAMA = "INSERT INTO public.Mama (id_tipoPersona, est_civ_ma, lug_tra_ma, cargo_ma) VALUES (?, ?, ?, ?)";
+
     @Override
     public boolean insertar(Mama ma) {
         boolean registrar = false;
-        PreparedStatement sta=null;
+        PreparedStatement staPersona = null;
+        PreparedStatement staMama = null;
+        ResultSet generatedKeys = null;
+
         try {
             this.conectar();
-            sta=this.conexion.prepareStatement(INSERT);
-             
-            sta.setString(1, ma.getNombre());
-            sta.setString(2, ma.getEst_civ_ma());
-            sta.setString(3, ma.getLug_tra_ma());
-            sta.setString(4, ma.getCargo_ma());
-            sta.setString(5, ma.getTelefono());
-            
-            
-            
-            sta.executeUpdate();
-         
-        }catch (SQLException e){
-            System.out.println("Esta mal el registro sql del insertar"+e);
-            JOptionPane.showMessageDialog(null, "Faltan datos o en el campo id_mama "
-                     + " a ingresado un dato que no existe a esa tabla", "Error", JOptionPane.WARNING_MESSAGE);
+
+            // Insertar en tabla Persona
+            staPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
+            staPersona.setString(1, ma.getNombre());
+            staPersona.setString(2, ma.getTelefono());
+            staPersona.executeUpdate();
+
+            // Obtener el ID generado para el registro insertado en Persona
+            generatedKeys = staPersona.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int id_tipoPersona = generatedKeys.getInt(1);
+
+                // Insertar en tabla Mama
+                staMama = this.conexion.prepareStatement(INSERT_MAMA);
+                staMama.setInt(1, id_tipoPersona);
+                staMama.setString(2, ma.getEst_civ_ma());
+                staMama.setString(3, ma.getLug_tra_ma());
+                staMama.setString(4, ma.getCargo_ma());
+                staMama.executeUpdate();
+
+                registrar = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al insertar en la tabla Persona: " + e);
+            JOptionPane.showMessageDialog(null, "Faltan datos o se ingresó un dato incorrecto en la tabla Persona", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
             Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
+                if (generatedKeys != null) {
+                    generatedKeys.close();
+                }
+                if (staPersona != null) {
+                    staPersona.close();
+                }
+                if (staMama != null) {
+                    staMama.close();
+                }
                 this.desconectar();
             } catch (Exception ex) {
                 Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,63 +86,77 @@ public class DaoMama  extends Conexion implements IMama{
 
     @Override
     public boolean eliminar(Mama ma) {
-        boolean eliminar=false;
-        try{
-             try {
-               this.conectar();
-                } catch (Exception ex) {
-                    Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }  
-            PreparedStatement st=this.conexion.prepareStatement(DELETE); 
-            
+        boolean eliminar = false;
+        try {
+            this.conectar();
+            PreparedStatement st = this.conexion.prepareStatement(DELETE);
             st.setInt(1, ma.getId_mama());
-              int filas = st.executeUpdate();
-           if(filas>0){
-               conexion.close();
-           }else{
-               conexion.close();
-           }
-        }catch(SQLException e){
-           JOptionPane.showMessageDialog(null,"Ocurrio un error EN el sql eliminar:"+e.getMessage());
-           System.out.println("esta mal el registro sql del idMama"+e);
-	}
+            int filas = st.executeUpdate();
+            if (filas > 0) {
+                eliminar = true;
+            }
+            this.desconectar();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error en la consulta SQL para eliminar: " + e.getMessage());
+            System.out.println("Error en la consulta SQL para eliminar: " + e);
+        } catch (Exception ex) {
+            Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return eliminar;
     }
 
     @Override
-    public boolean modificar(Mama ma) {
-        boolean actualizar= false;
-	PreparedStatement sta=null;
+public boolean modificar(Mama ma) {
+    boolean actualizar = false;
+    PreparedStatement staMama = null;
+    PreparedStatement staPersona = null;
+    try {
+        this.conectar();
+
+        // Actualizar en tabla Mama
+        String sqlMama = "UPDATE public.Mama SET est_civ_ma = ?, lug_tra_ma = ?, cargo_ma = ? WHERE id_mama = ?";
+        staMama = this.conexion.prepareStatement(sqlMama);
+
+        staMama.setString(1, ma.getEst_civ_ma());
+        staMama.setString(2, ma.getLug_tra_ma());
+        staMama.setString(3, ma.getCargo_ma());
+        staMama.setInt(4, ma.getId_mama());
+
+        int filasMama = staMama.executeUpdate();
+
+        // Actualizar en tabla Persona
+        String sqlPersona = "UPDATE public.tipoPersona SET nombre = ?, telefono = ? WHERE id_tipoPersona = ?";
+        staPersona = this.conexion.prepareStatement(sqlPersona);
+
+        staPersona.setString(1, ma.getNombre());
+        staPersona.setString(2, ma.getTelefono());
+        staPersona.setInt(3, ma.getId_tipoPersona());
+
+        int filasPersona = staPersona.executeUpdate();
+
+        if (filasMama > 0 && filasPersona > 0) {
+            actualizar = true;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Ocurrió un error en la consulta SQL para modificar: " + e.getMessage());
+        System.out.println("Error en la consulta SQL para modificar: " + e);
+    } catch (Exception ex) {
+        Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
         try {
-             this.conectar();  
-             String sql= "UPDATE public.Mama SET est_civ_ma = ?, lug_tra_ma = ?, cargo_ma = ? WHERE id_mama = ?";
-             sta=this.conexion.prepareStatement(sql);
-             
-             sta.setString(1, ma.getNombre());
-             sta.setString(2, ma.getEst_civ_ma());
-             sta.setString(3, ma.getLug_tra_ma());
-             sta.setString(4, ma.getCargo_ma());
-             sta.setString(5, ma.getTelefono());
-             sta.setInt(6, ma.getId_mama());
-             
-             sta.executeUpdate();
-         
-          if(sta.executeUpdate()==0){
-                // throw new Exception("El registro no se ha modificado");
-           }
-        }catch (Exception e){
-               JOptionPane.showMessageDialog(null, "ESTA MAL EL INGRESO DE DATOS MODIFICAR mama "+e);
-               JOptionPane.showMessageDialog(null, "Faltan datos o en el campo mama_id"
-                     + " a ingresado un dato que no existe a esa tabla, o no existe el codigo que desea cambiar", "Error", JOptionPane.WARNING_MESSAGE);
-           // throw e;
-        }finally{
-                try {
-                    this.desconectar();
-                } catch (Exception ex) {
-                    Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        }return actualizar;
+            if (staMama != null) {
+                staMama.close();
+            }
+            if (staPersona != null) {
+                staPersona.close();
+            }
+            this.desconectar();
+        } catch (Exception ex) {
+            Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    return actualizar;
+}
 
     @Override
     public ArrayList<Object[]> consultar() {

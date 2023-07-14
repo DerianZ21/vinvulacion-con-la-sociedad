@@ -74,11 +74,7 @@ public class Controlador extends Conexion implements ActionListener, FocusListen
     DefaultTableModel modelocurso = new DefaultTableModel(COLUMCurso, 0);
     boolean valor;
 
-<<<<<<< HEAD
     String COLUMBenefi[] = {"Cédula", "Nombre", "Apellido", "Dirección","Telefono"};
-=======
-    String COLUMBenefi[] = {"Cédula", "Nombre", "Apellido", "Padre", "Madre", "Dirección", "Telefono"};
->>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
     DefaultTableModel modeloBenefi;
     
     String COLUMPadres[] = {"Id", "nombre", "Estado civil", "Lugar Trabajo", "Cargo", "Telefono"};

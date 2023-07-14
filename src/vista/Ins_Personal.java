@@ -465,7 +465,6 @@ public class Ins_Personal extends javax.swing.JFrame {
     public void registro(){
         Reg_Benf reg = new Reg_Benf();
         //Datos del beneficiario
-<<<<<<< HEAD
         reg.setNombre(Jtf_Nombres.getText());
         reg.setApellido(Jtf_Apellidos.getText());
         reg.setDireccion(Jtf_Dir.getText());
@@ -477,19 +476,7 @@ public class Ins_Personal extends javax.swing.JFrame {
         reg.setTelefono(Jtf_benf_celular.getText());
         reg.setNum_conv(Integer.parseInt(Jtf_benf_convencional.getText()));
         reg.setProm_sal(prob_salud());
-=======
-        reg.setBen_nom(Jtf_Nombres.getText());
-        reg.setBen_ape(Jtf_Apellidos.getText());
-        reg.setBen_dir(Jtf_Dir.getText());
-        reg.setBen_ced(Jtf_Cedula.getText());
-        reg.setBen_edad(Integer.parseInt(Jtf_edad.getText()));
-        reg.setBen_relig(Jcb_Religion.getSelectedItem().toString());
-        reg.setBen_email(Jtf_Correo.getText());
-        reg.setBen_fechanac(JDC_fechanac.getDate());
-        reg.setBen_cel(Jtf_benf_celular.getText());
-        reg.setBen_convivientes(Integer.parseInt(Jtf_benf_convencional.getText()));
-        reg.setBen_promsal(prob_salud());
->>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
+        
         //Llaves
         reg.setId_benf(1);
         reg.setId_padres(1);

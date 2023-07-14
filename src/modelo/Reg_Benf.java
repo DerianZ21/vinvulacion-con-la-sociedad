@@ -164,14 +164,10 @@ public class Reg_Benf extends tipoPersonaEntity{
         this.fech_nac = fech_nac;
     }
 
-<<<<<<< HEAD
+
    public void mostrarDato(){
         System.out.println(this.getNombre()+"\n"+ this.getApellido()+ this.getCedula());
     }
-=======
-   
->>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
-    
     
 
     public  Reg_Benf(){

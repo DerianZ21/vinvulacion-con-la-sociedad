@@ -517,21 +517,16 @@ public class Ins_DatoPadre extends javax.swing.JFrame {
     
 
     public void llenarDatosPa(Papa modePa ) {
-<<<<<<< HEAD
         getJtf_nom_ape().setText(modePa.getNombre());
         String estCivil =modePa.getEst_civ_pa();
         getJcb_Estado().setSelectedItem(estCivil);
         getJtf_lugar_trab().setText(modePa.getLug_tra_pa());
         getJtf_Cargo().setText(modePa.getCargo_pa());
         getJtf_Tut_telef().setText(modePa.getTelefono());
-=======
-        getJtf_nom_ape().setText(modePa.getNombre_pa());
-        String estCivil =modePa.isEst_civ_pa();
+        getJtf_nom_ape().setText(modePa.getNombre());
         getJcb_Estado().setSelectedItem(estCivil);
         getJtf_lugar_trab().setText(modePa.getLug_tra_pa());
         getJtf_Cargo().setText(modePa.getCargo_pa());
-        getJtf_Tut_telef().setText(modePa.getTele_pa());
->>>>>>> 524838123c04a47a83abe419a23a176cb6187ee8
     }
    
     

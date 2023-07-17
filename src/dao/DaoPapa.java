@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import conexion.Conexion;
@@ -12,102 +7,55 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Papa;
-import modelo.tipoPersonaEntity;
 
 /**
  *
  * @author Sebastian Riofrio
  */
 public class DaoPapa extends Conexion implements IPapa{
-    
+    final String INSERT= "Insert into public.Papa( nombre_pa, est_civ_pa, lug_tra_pa, cargo_pa, tele_pa) VALUES (?,?,?,?,?)";
     final String DELETE="DELETE from public.Papa where id_papa=?";
-    final String INSERT_TIPO_PERSONA = "INSERT INTO public.tipoPersona (cedula, fech_nac, nombre, apellido, edad, telefono, direccion, correo, religion   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    final String INSERT_PAPA = "INSERT INTO public.Papa (id_tipo_persona, est_civ_pa, lug_tra_pa, cargo_pa) VALUES (?, ?, ?, ?)";
 
+    //Papa paNuev ;
     @Override
     public boolean insertar(Papa pa) {
         boolean registrar = false;
-        PreparedStatement staTipoPersona = null;
-        PreparedStatement staPapa = null;
-        ResultSet generatedKeys = null;
-        
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = simpleDateFormat.format(pa.getFech_nac());
-        java.sql.Date date1 = java.sql.Date.valueOf(formattedDate);
+        PreparedStatement sta=null;
         try {
             this.conectar();
-            this.conexion.setAutoCommit(false); // Iniciar transacción
-
-            // Insertar en tabla tipoPersona
-            staTipoPersona = this.conexion.prepareStatement(INSERT_TIPO_PERSONA, Statement.RETURN_GENERATED_KEYS);
-            staTipoPersona.setString(1, pa.getCedula());
-            staTipoPersona.setDate(2, date1);
-            staTipoPersona.setString(3, pa.getNombre());
-            staTipoPersona.setString(4, pa.getApellido());
-            staTipoPersona.setInt(5, pa.getEdad());
-            staTipoPersona.setString(6, pa.getDireccion());
-            staTipoPersona.setString(7, pa.getCorreo());
-            staTipoPersona.setString(8, pa.getReligion());
-            staTipoPersona.setString(9, pa.getTelefono());
-            staTipoPersona.executeUpdate();
-
-            // Obtener el ID generado para el registro insertado en tipoPersona
-            generatedKeys = staTipoPersona.getGeneratedKeys();
-            int idTipoPersona = -1;
-            if (generatedKeys.next()) {
-                idTipoPersona = generatedKeys.getInt(1);
-            }
-
-            if (idTipoPersona != -1) {
-                // Insertar en tabla Papa
-                staPapa = this.conexion.prepareStatement(INSERT_PAPA);
-                //staPapa.setInt(1, idTipoPersona);
-                staPapa.setString(1, pa.getEst_civ_pa());
-                staPapa.setString(2, pa.getLug_tra_pa());
-                staPapa.setString(3, pa.getCargo_pa());
-                staPapa.executeUpdate();
-
-                registrar = true;
-            }
-
-            this.conexion.commit(); // Confirmar la transacción
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta SQL del insertar: " + e);
-            JOptionPane.showMessageDialog(null, "Faltan datos o se ingresó un dato incorrecto en la tabla tipoPersona", "Error", JOptionPane.WARNING_MESSAGE);
-            try {
-                if (this.conexion != null) {
-                    this.conexion.rollback(); // Revertir la transacción en caso de error
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error al realizar rollback: " + ex);
-            }
+            sta=this.conexion.prepareStatement(INSERT);
+             
+            sta.setString(1, pa.getNombre());
+            sta.setString(2, pa.getEst_civ_pa());
+            sta.setString(3, pa.getLug_tra_pa());
+            sta.setString(4, pa.getCargo_pa());
+            sta.setString(5, pa.getTelefono());
+            
+            
+            
+            sta.executeUpdate();
+         
+        }catch (SQLException e){
+            System.out.println("Esta mal el registro sql del insertar"+e);
+            JOptionPane.showMessageDialog(null, "Faltan datos o en el campo id_papa "
+                     + " a ingresado un dato que no existe a esa tabla", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
             Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        }finally{
             try {
-                if (generatedKeys != null) {
-                    generatedKeys.close();
-                }
-                if (staTipoPersona != null) {
-                    staTipoPersona.close();
-                }
-                if (staPapa != null) {
-                    staPapa.close();
-                }
-                this.conexion.setAutoCommit(true); // Restaurar el modo de autocommit
                 this.desconectar();
             } catch (Exception ex) {
                 Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return registrar;
-}
+    }
+
     @Override
     public boolean eliminar(Papa pa) {
         boolean eliminar=false;
@@ -139,13 +87,15 @@ public class DaoPapa extends Conexion implements IPapa{
 	PreparedStatement sta=null;
         try {
              this.conectar();
-             String sql= "UPDATE public.Papa SET est_civ_pa = ?, lug_tra_pa = ?, cargo_pa = ? WHERE id_papa = ?";
+             String sql= "UPDATE public.Papa SET nombre_pa = ?, est_civ_pa = ?, lug_tra_pa = ?, cargo_pa = ?, tele_pa = ? WHERE id_papa = ?";
              sta=this.conexion.prepareStatement(sql);
              
-            sta.setString(1, pa.getEst_civ_pa());
-            sta.setString(2, pa.getLug_tra_pa());
-            sta.setString(3, pa.getCargo_pa());
-            sta.setInt(4, pa.getId_papa());
+            sta.setString(1, pa.getNombre());
+            sta.setString(2, pa.getEst_civ_pa());
+            sta.setString(3, pa.getLug_tra_pa());
+            sta.setString(4, pa.getCargo_pa());
+            sta.setString(5, pa.getTelefono());
+            sta.setInt(6, pa.getId_papa());
              
              sta.executeUpdate();
          
@@ -176,8 +126,7 @@ public class DaoPapa extends Conexion implements IPapa{
         
         
 //        String sql="SELECT id_usuario, username, password, tipo_usuario, estado FROM public.usuario ORDER BY id_usuario";
-        String sql="SELECT p.id_papa, t.nombre, p.est_civ_pa, p.lug_tra_pa, p.cargo_pa, t.telefono\n"+
-                "FROM papa p, tipoPersona t ORDER BY id_papa.";
+        String sql="SELECT id_papa, nombre_pa, est_civ_pa, lug_tra_pa, cargo_pa, tele_pa FROM public.Papa ORDER BY id_papa ";
         
         
         try {
@@ -215,13 +164,10 @@ public class DaoPapa extends Conexion implements IPapa{
         ResultSet rs=null;
         Papa paNuev = new Papa();
         
-        tipoPersonaEntity tipoPersona= new tipoPersonaEntity();
-        
         boolean valor = false;
         
         
-        String sql="SELECT * FROM papa p, tipoPersona t\n" +
-          "where t.nombre=?  and p.est_civ_pa=? and p.lug_tra_pa=? and p.cargo_pa=? and t.telefono=?;";
+        String sql="SELECT * FROM papa where nombre_pa = ? and est_civ_pa = ? and lug_tra_pa = ? and cargo_pa = ? and tele_pa= ?;";
        
         try {
             this.conectar();
@@ -268,7 +214,7 @@ public class DaoPapa extends Conexion implements IPapa{
         boolean valor = false;
         
         
-        String sql="SELECT * FROM tipoPersona where nombre = ? ;";
+        String sql="SELECT * FROM papa where nombre_pa = ? ;";
        
         try {
             this.conectar();
@@ -337,7 +283,7 @@ public class DaoPapa extends Conexion implements IPapa{
             sta.close();
             conexion.close();
             
-            if (paNuev.getNombre() == null){
+            if (paNuev.getNombre()== null){
                 paNuev.setNombre(pa.getNombre());
             }
            
